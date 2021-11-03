@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="final-game.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <ul class="options">
+        <li class="sub-optins"><i class="fa fa-car"><a href="#">Car</a></i></li>
+        <li class="sub-optins"><i class="fa fa-child"><a href="#">Person</a></i></li>
+        <li class="sub-optins"><i class="fa fa-comments"><a href="#">Country</a></i></li>
+    </ul>
+    <div class="ani">
+        <p class="p-ani">Sorry, We do not have this.</p>
+    </div>
+    <p class="ctr"></p>
+    <div class="p-allow">
+
+    </div>
+
+    <p class="show"></p>
+    <div class="main">
+        <div class="alphabet">A</div>
+        <div class="alphabet">B</div>
+        <div class="alphabet">C</div>
+        <div class="alphabet">D</div>
+        <div class="alphabet">E</div>
+        <div class="alphabet">F</div>
+        <div class="alphabet">G</div>
+        <div class="alphabet">H</div>
+        <div class="alphabet">I</div>
+        <div class="alphabet">J</div>
+        <div class="alphabet">K</div>
+        <div class="alphabet">L</div>
+        <div class="alphabet">M</div>
+        <div class="alphabet">N</div>
+        <div class="alphabet">O</div>
+        <div class="alphabet">P</div>
+        <div class="alphabet">Q</div>
+        <div class="alphabet">R</div>
+        <div class="alphabet">S</div>
+        <div class="alphabet">T</div>
+        <div class="alphabet">U</div>
+        <div class="alphabet">V</div>
+        <div class="alphabet">W</div>
+        <div class="alphabet">X</div>
+        <div class="alphabet">Y</div>
+        <div class="alphabet">Z</div>
+    </div>
+    <div class="false">
+        <h3 class="tit">Falses</h3>
+    </div>
+    <div class="answer"></div>
+    <div class="subj"></div>
+    <script src="jquery.js"></script>
+    <script>
+        $(".select").hover(function() {
+            $(this).css("cursor", "pointer")
+        })
+        $(".select").click(function() {
+            $(".ani").animate({
+                "width": "50%"
+            }, 2000, function() {
+                $(".p-ani").css("display", "block")
+                $(".p-ani").animate({
+                    "width": "90%",
+                    "opacity": "0.9"
+                }, 2000)
+            })
+        })
+        var opt = {
+            Car: ['ford', 'gulieta', 'lamborgini', 'bmw', 'benz', 'mitsubishi'],
+            Person: ['mahdi', 'niki', 'maryam', 'niaz', 'abdolhamid', 'garshasb'],
+            Country: ['norway', 'germany', 'kenia', 'poland', 'netherland', 'canada']
+        }
+
+        $(".sub-optins").click(function() {
+            let mozo = $(this).text()
+            let op_mozo = opt[mozo]
+            let max = op_mozo.length
+            let no = Math.floor(Math.random() * max)
+            var word = op_mozo[no]
+            var copy_word = word
+            word = word.replace(/\s+/g, '')
+            var repeat = word.length
+            $(".subj").html("Your word is about name of : " + "" + mozo + "" + " & " + " you have " + "" + repeat + "" + "chances to select.")
+            var content = '<div class="allow"> </div>'
+            var fls = '<div class="c-fls"> </div>'
+            for (let i = 0; i < repeat; i++) {
+                $(".p-allow").append(content)
+                $(".false").append(fls)
+            }
+            $(".c-fls").empty()
+            var counter_clicks = 0
+            $(".alphabet").click(function() {
+                $(".ani p").css({
+                    "display": "none"
+                })
+                if (counter_clicks < (repeat)) {
+                    counter_clicks += 1
+                    var conts = document.querySelectorAll(".allow")
+                    var part = $(this).text().toLowerCase()
+                    if (word.includes(part)) {
+                        var indices = []
+                        for (let x = 0; x < word.length; x++) {
+                            if (word[x] === part) indices.push(x)
+                        }
+                        for (let u = 0; u < indices.length; u++) {
+                            let num = indices[u]
+                            conts[num].innerHTML = part
+                        }
+                    } else {
+                        var f = $(this).text().toLowerCase()
+                        var fal = document.querySelectorAll(".c-fls")
+                        $(".ani").animate({
+                            "width": "50%"
+                        }, 1500, function() {
+                            $(".p-ani").css("display", "block")
+                            $(".p-ani").animate({
+                                "width": "100%",
+                                "opacity": "0.9"
+                            })
+
+                            for (let u = 0; u < fal.length; u++) {
+                                if (fal[u].innerHTML === "") {
+                                    fal[u].innerHTML = f
+                                    break
+                                }
+                            }
+                        })
+                    }
+                } else {
+                    $(".alphabet").off("click")
+                    $(".main").animate({
+                        "width": "0",
+                        "height": "0"
+                    })
+                    $(".alphabet").css("display", "none")
+                    $(".show").animate({
+                        "width": "50%",
+                        "height": "30px",
+                    })
+                    $(".show").html("your chances finished.")
+                    $(".answer").animate({
+                        "width": "50%",
+                        "height": "50px"
+                    }, 2000)
+                    $(".answer").html("The answer is: " + "" + copy_word + "")
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>
